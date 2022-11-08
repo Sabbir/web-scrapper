@@ -14,7 +14,7 @@ const scrapperScript = async (pr) => {
       // console.log($.html())
       
       var te = $("head > script")
-      console.log(te[3].lastChild.data)
+     
       // $("head > script").each((idx, elem) =>{
       //   console.log(idx+"::\n")
       //   console.log(elem['children'])
@@ -23,18 +23,23 @@ const scrapperScript = async (pr) => {
           
       //   }
       //})
-      const DataBooks = $('.head .script')
-     
+      const DataBooks = te[3].lastChild.data.replace("window.pageData=","")
+      
+      let l = JSON.parse(DataBooks)
+      let lItem = l.mods.listItems
       const scrapedData = []
-      DataBooks.each((index, el) => {
-        const scrapItem = { title: '', price: '' }
-        scrapItem.title = $(el).children('h3').text()
-        scrapItem.price = $(el)
-          .children('.product_price')
-          .children('p.price_color')
-          .text()
+      lItem.forEach(elem => {
+        const scrapItem = { title: '', price: '', url: '', img: ''}
+
+        scrapItem.title = elem.name
+        scrapItem.price = elem.price
+        scrapItem.url = elem.productUrl
+        scrapItem.img = elem.image
         scrapedData.push(scrapItem)
+
       })
+      
+      
       //console.dir(scrapedData)
       // fs.writeFile(
       //   './result/scrapedBooks.json',
