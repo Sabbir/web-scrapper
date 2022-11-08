@@ -15,14 +15,7 @@ const scrapperScript = async (pr) => {
       
       var te = $("head > script")
      
-      // $("head > script").each((idx, elem) =>{
-      //   console.log(idx+"::\n")
-      //   console.log(elem['children'])
-      //   for(var i in elem){
-      //     console.log(i)
-          
-      //   }
-      //})
+      
       const DataBooks = te[3].lastChild.data.replace("window.pageData=","")
       
       let l = JSON.parse(DataBooks)
