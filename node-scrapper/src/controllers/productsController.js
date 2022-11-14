@@ -8,6 +8,8 @@ const getAllProducts = (req, res) => {
       //the promise is resolved here
       
       res.status(201).send(pr)
+    }).catch(err=>{
+      res.status(401).send({ error : err.message });
     })
     console.log(req.params.product)
     
