@@ -29,27 +29,35 @@ class Home extends React.Component{
           this.setState({isLoaded:true});
           // Do something with value
           console.log("got this:", q);
-          fetch("http://localhost:3010/api/v1/products/"+ q)
-          .then(res => res.json())
-          .then(
-            (result) => {
-              
-              this.setState({
-                isSearch: true,
-                products: result
-              });
-            }
-          )
-          .catch(err => {
-            this.setState({
-              isSearch:false,
-              isLoaded:false,
-              msg:"Product not found :("
-            })
-          })
+
+          getProducts("http://localhost:3010/api/v1/products/"+ q)
+          
+
           
         }
         
+      }
+      const getProducts=(uri)=>{
+
+        fetch(uri)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isSearch: true,
+              products: result
+            });
+          }
+        )
+        .catch(err => {
+          console.log(err.message)
+          this.setState({
+            isSearch:false,
+            isLoaded:false,
+            msg:err.message
+          })
+        })
+
       }
       const handleKeyPress = e => {
         console.log(q.length)

@@ -5,13 +5,16 @@ const API = 'http://books.toscrape.com/catalogue/category/books/mystery_3/index.
 const sc = require("./scrapedBooks.json")
 
 const dAPI = 'https://www.daraz.com.bd/catalog/?q='
+const aAPI = 'https://www.aadi.com.bd/search/?q='
 
 const scrapperScript = async (pr) => {
     try {
       let daAPI = dAPI + pr
-      const { data } = await axios.get(daAPI)
-      const $ = cheerio.load(data)
-      // console.log($.html())
+      let aaAPI = aAPI + pr
+      let  { data }  = await axios.get(daAPI)
+      
+      $ = cheerio.load(data)
+       
       
       var te = $("head > script")
      
@@ -31,6 +34,20 @@ const scrapperScript = async (pr) => {
         scrapedData.push(scrapItem)
 
       })
+
+        const { data:dataA }  = await axios.get(aaAPI)
+
+        $ = cheerio.load(dataA) 
+        console.log($.html())
+        
+        var dt = $("div")
+        
+
+        // te.forEach(elem => {
+        //    console.log(elem.text)
+        // })
+       
+       
       
       
       //console.dir(scrapedData)
