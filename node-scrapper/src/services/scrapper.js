@@ -3,6 +3,7 @@ const cheerio = require('cheerio')
 const axios = require('axios')
 const API = 'http://books.toscrape.com/catalogue/category/books/mystery_3/index.html'
 const sc = require("./scrapedBooks.json")
+const { json } = require('body-parser')
 
 const dAPI = 'https://www.daraz.com.bd/catalog/?q='
 const aAPI = 'https://www.aadi.com.bd/search/?q='
@@ -23,10 +24,11 @@ const scrapperScript = async (pr) => {
       
       let l = JSON.parse(DataBooks)
       let lItem = l.mods.listItems
+      
       const scrapedData = []
       lItem.forEach(elem => {
+        
         const scrapItem = { title: '', price: '', url: '', img: ''}
-
         scrapItem.title = elem.name
         scrapItem.price = elem.price
         scrapItem.url = elem.productUrl
@@ -38,10 +40,18 @@ const scrapperScript = async (pr) => {
         const { data:dataA }  = await axios.get(aaAPI)
 
         $ = cheerio.load(dataA) 
-        console.log($.html())
+        // console.log($.html())
+        var dt = $("div > .single-product")
         
-        var dt = $("div")
-        
+                  
+        dt.each(el=>{
+          let v = $(dt[el]).children('a').attr('href')
+          let d = $(dt[el]).children('div').children("h3").children('a').text()
+          console.log(d)
+          console.log("\n\n end \n\n ...")
+          
+         }
+        )
 
         // te.forEach(elem => {
         //    console.log(elem.text)
