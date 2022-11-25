@@ -9,7 +9,7 @@ class Home extends React.Component{
       q:'',
       isSearch: false,
       isLoaded: false,
-      products: [],
+      products: {},
       msg:"Search for a product"
     };
   }
@@ -22,7 +22,18 @@ class Home extends React.Component{
    
     render(){
       const { q, isSearch, isLoaded, products, msg } = this.state;
-      console.log(products);
+      if(isSearch){
+        products.forEach(el => {
+          if(el.daraz!==undefined)
+               console.log(el.daraz)
+        });
+        // ((product) => (
+
+        //   console.log(product)
+        // ))
+        
+      
+      }
 
       const handleTrack = () => {
         if (q.length !== 0) {
@@ -47,7 +58,9 @@ class Home extends React.Component{
               isSearch: true,
               products: result
             });
+           console.log(products)  
           }
+          
         )
         .catch(err => {
           console.log(err.message)
@@ -60,8 +73,7 @@ class Home extends React.Component{
 
       }
       const handleKeyPress = e => {
-        console.log(q.length)
-          if(q.length===0){
+         if(q.length===0){
             this.setState({ 
               isSearch:false,
               isLoaded:false,
@@ -129,18 +141,32 @@ class Home extends React.Component{
             ) : (
               
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-16">
+                 
                           {products.map((product) => (
-                            <a href={product.url} target="_blank"  rel="noreferrer" >
-                              <img className="hover:grow object-contain hover:shadow-lg h-48 w-46" src={product.img} alt="Product"  />
+                            
+                            (product.daraz!== undefined)?(
+                              
+                              product.daraz.map((d) => (    
+                                
+                              <a href={d.url} target="_blank"  rel="noreferrer" >
+                              <img className="hover:grow object-contain hover:shadow-lg h-48 w-46" src={d.img} alt="Product"  />
                               <div className="pt-2 flex items-center justify-between">
-                                <p className="">{product.title}</p>
+                                <p className="">{d.title}</p>
                                 <svg className="h-6 w-6 fill-current text-gray-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                   <path d="M12,4.595c-1.104-1.006-2.512-1.558-3.996-1.558c-1.578,0-3.072,0.623-4.213,1.758c-2.353,2.363-2.352,6.059,0.002,8.412 l7.332,7.332c0.17,0.299,0.498,0.492,0.875,0.492c0.322,0,0.609-0.163,0.792-0.409l7.415-7.415 c2.354-2.354,2.354-6.049-0.002-8.416c-1.137-1.131-2.631-1.754-4.209-1.754C14.513,3.037,13.104,3.589,12,4.595z M18.791,6.205 c1.563,1.571,1.564,4.025,0.002,5.588L12,18.586l-6.793-6.793C3.645,10.23,3.646,7.776,5.205,6.209 c0.76-0.756,1.754-1.172,2.799-1.172s2.035,0.416,2.789,1.17l0.5,0.5c0.391,0.391,1.023,0.391,1.414,0l0.5-0.5 C14.719,4.698,17.281,4.702,18.791,6.205z" />
                                 </svg>
                               </div>
-                              <p className="pt-1 text-gray-900 font-bold">BDT {product.price}</p>
+                              <p className="pt-1 text-gray-900 font-bold">BDT {d.price}</p>
                             </a>
-                          ))}
+                              )
+                            )
+                            
+                             
+                          ):(
+                            <div>Daraz has no product</div>
+                          )
+                          )
+                          )}
                         </div>
                 ) 
                

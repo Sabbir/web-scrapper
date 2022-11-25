@@ -12,31 +12,48 @@ const scrapperScript = async (pr) => {
     try {
       let daAPI = dAPI + pr
       let aaAPI = aAPI + pr
-      let  { data }  = await axios.get(daAPI)
-      
-      $ = cheerio.load(data)
-       
-      
-      var te = $("head > script")
-     
-      
-      const DataBooks = te[3].lastChild.data.replace("window.pageData=","")
-      
-      let l = JSON.parse(DataBooks)
-      let lItem = l.mods.listItems
-      
-      const scrapedData = []
-      lItem.forEach(elem => {
+
+      const scrapedDataD = []
+      const scrapedDataA = []
+
+      try{
+
+        let  { data }  = await axios.get(daAPI)
         
-        const scrapItem = { title: '', price: '', url: '', img: ''}
-        scrapItem.title = elem.name
-        scrapItem.price = elem.price
-        scrapItem.url = elem.productUrl
-        scrapItem.img = elem.image
-        scrapedData.push(scrapItem)
+        $ = cheerio.load(data)
+        
+        
+        var te = $("head > script")
+      
+        
+        const DataBooks = te[3].lastChild.data.replace("window.pageData=","")
+        
+        let l = JSON.parse(DataBooks)
+        let lItem = l.mods.listItems
+        
+        
+        
+        lItem.forEach(elem => {
+          
+          const scrapItemD = { title: '', price: '', url: '', img: ''}
+          scrapItemD.title = elem.name
+          scrapItemD.price = elem.price
+          scrapItemD.url = elem.productUrl
+          scrapItemD.img = elem.image
+          scrapedDataD.push(scrapItemD)
 
-      })
+        })
+      }
+      catch(er){
+        const scrapItemD = { title: 'er.message', price: '', url: '', img: ''}
+        scrapedDataD.push(scrapItemD)
+      }  
 
+      let js = []
+      js.push({daraz: scrapedDataD })
+      
+      
+      try{
         const { data:dataA }  = await axios.get(aaAPI)
 
         $ = cheerio.load(dataA) 
@@ -45,13 +62,33 @@ const scrapperScript = async (pr) => {
         
                   
         dt.each(el=>{
-          let v = $(dt[el]).children('a').attr('href')
-          let d = $(dt[el]).children('div').children("h3").children('a').text()
-          console.log(d)
-          console.log("\n\n end \n\n ...")
+          const scrapItemA = { title: '', price: '', url: '', img: ''}
+           
+          let t = $(dt[el]).children('div').children("h3").children('a').text()
+          let u = $(dt[el]).children('div').children("h3").children('a').attr('href')
+          let p = $(dt[el]).find(" span > #product_detail_price_tag_span").attr("data-price")
+          let img = $(dt[el]).find("figure > img").attr("data-src")
+
+          console.log(img)
+
+          scrapItemA.title = t
+          scrapItemA.price = p
+          scrapItemA.url = "https://aadi.com.bd/"+u
+          scrapItemA.img = img 
+
+
+          console.log("\n end \n\n ...")
+          scrapedDataA.push(scrapItemA)
           
          }
         )
+      }
+      catch(er){
+        const scrapItemA = { title: 'er.message', price: '', url: '', img: ''}
+        scrapedDataA.push(scrapItemA)
+
+      }
+        js.push({aadi: scrapedDataA })
 
         // te.forEach(elem => {
         //    console.log(elem.text)
@@ -72,9 +109,11 @@ const scrapperScript = async (pr) => {
       //     console.log('Scraping completed.')
       //   },
       // )
-      return JSON.stringify(scrapedData, null, 2)
+      return JSON.stringify(js, null, 2)
+      //return JSON.stringify(scrapedData, null, 2)
     } catch (error) {
       console.error(error)
+      
     }
   }
 
