@@ -22,6 +22,7 @@ class Home extends React.Component{
    
     render(){
       const { q, isSearch, isLoaded, products, msg } = this.state;
+      let pr;
       if(isSearch){
         products.forEach(el => {
           if(el.daraz!==undefined)
@@ -144,9 +145,18 @@ class Home extends React.Component{
                  
                           {products.map((product) => (
                             
-                            (product.daraz!== undefined)?(
-                              
-                              product.daraz.map((d) => (    
+                            product.daraz!== undefined?(
+                                pr = product.daraz ):(product.aadi!== undefined?(
+                                pr = product.aadi
+                              ):(
+                                pr = []
+                               ))
+                                )
+                               )
+                              }
+
+                              {
+                               pr.map((d) => (    
                                 
                               <a href={d.url} target="_blank"  rel="noreferrer" >
                               <img className="hover:grow object-contain hover:shadow-lg h-48 w-46" src={d.img} alt="Product"  />
@@ -160,13 +170,9 @@ class Home extends React.Component{
                             </a>
                               )
                             )
-                            
-                             
-                          ):(
-                            <div>Daraz has no product</div>
-                          )
-                          )
-                          )}
+                               
+                               }
+                          
                         </div>
                 ) 
                
