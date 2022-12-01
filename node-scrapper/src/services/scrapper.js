@@ -84,7 +84,8 @@ const scrapperScript = async (pr) => {
         )
       }
       catch(er){
-        const scrapItemA = { title: 'er.message', price: '', url: '', img: ''}
+        console.log(er)
+        const scrapItemA = { title: er.message, price: '', url: '', img: ''}
         scrapedDataA.push(scrapItemA)
 
       }
