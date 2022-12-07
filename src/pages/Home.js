@@ -25,6 +25,7 @@ class Home extends React.Component{
       const { q, isSearch, isLoaded, products, msg } = this.state;
       
       if(isSearch){
+        console.log(products[2])
         products.forEach(el => {
           
                console.log(el)
@@ -146,17 +147,12 @@ class Home extends React.Component{
                  
                           {products.map((product) => (
                             
-                            product.daraz!==undefined?( 
-                              <div className="xl:gap-x-8">
-                              <div className="mt-8 ml-8">Daraz Products</div>
-                              <Products data={product.daraz} />
-                            
-                            
-                                
+                             
+                              <div>
+                                <div className="container max-w-screen-lg mx-auto my-8 ml-8 justify-center">{product.name} product</div>
+                                <Products data={product.p} />
                               </div>
-                            ):(
-                              <Products data={product.aadi} />
-                            )
+                            
 
                             
                              
