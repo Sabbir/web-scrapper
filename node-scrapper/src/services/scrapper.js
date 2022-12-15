@@ -1,17 +1,17 @@
 const fs = require('fs')
-const rp = require('request-promise');
+
 const cheerio = require('cheerio')
-const axios = require('axios')
-const API = 'http://books.toscrape.com/catalogue/category/books/mystery_3/index.html'
+
 const sc = require("./scrapedBooks.json")
 const { json } = require('body-parser')
-var request = require("request"); 
+
 const got = require('got');
 
 
 const dAPI = 'https://www.daraz.com.bd/catalog/?q='
 const aAPI = 'https://www.aadi.com.bd/search/?q='
 const biAPI = 'https://blucheez.com.bd/search?page=1&q='
+const wcAPI = 'https://www.walcart.com/catalogsearch/result/?q='
 
 
 
@@ -20,11 +20,13 @@ const scrapperScript = async (pr) => {
       let daAPI = dAPI + pr
       let aaAPI = aAPI + pr
       let blAPI = biAPI + pr
+      let wcrAPI = wcAPI + pr
 
 
       const scrapedDataD = []
       const scrapedDataA = []
       const scrapedDataB = []
+      const scrapedDataW = []
       const js = []
       
       try{
@@ -51,13 +53,13 @@ const scrapperScript = async (pr) => {
           
                 const scrapItemD = { title: '', price: '', url: '', img: ''}
                 scrapItemD.title = elem.name
-                scrapItemD.price = elem.price
+                scrapItemD.price = "BDT "+elem.price
                 scrapItemD.url = elem.productUrl
                 scrapItemD.img = elem.image
                 scrapedDataD.push(scrapItemD)
       
               })
-              js.push({name:'daraz',p: scrapedDataD })
+              js.push({name:'Daraz',p: scrapedDataD })
               
               
               
@@ -78,10 +80,10 @@ const scrapperScript = async (pr) => {
       
       
       try{
-        const { data:dataA }  = await axios.get(aaAPI)
+        const dataA  = await got(aaAPI).text()
 
         $ = cheerio.load(dataA) 
-       
+        
         var dt = $("div > .single-product")
         
                   
@@ -94,7 +96,7 @@ const scrapperScript = async (pr) => {
           let img = $(dt[el]).find("figure > img").attr("data-src")
 
           scrapItemA.title = t
-          scrapItemA.price = p
+          scrapItemA.price = "BDT "+p
           scrapItemA.url = "https://aadi.com.bd/"+u
           scrapItemA.img = img 
 
@@ -111,7 +113,7 @@ const scrapperScript = async (pr) => {
         scrapedDataA.push(scrapItemA)
 
       }
-        js.push({name:'aadi', p: scrapedDataA })
+        js.push({name:'Aadi', p: scrapedDataA })
 
 
       //bluecheeze
@@ -125,7 +127,7 @@ const scrapperScript = async (pr) => {
               
         dt.each(el=>{
           const scrapItemB = { title: '', price: '', url: '', img: ''}
-          console.log($(dt[el]).children("div > .product-image").children("noscript").children("img"))
+          
           let t = $(dt[el]).children('div > .product-info').find('h3').text()
           let u = $(dt[el]).find("div > .product-image").attr("data-rendert4s")
           let p = $(dt[el]).find(".price").text()
@@ -137,10 +139,6 @@ const scrapperScript = async (pr) => {
           scrapItemB.url = "https://blucheez.com.bd"+u
           scrapItemB.img = img 
 
-          console.log(scrapItemB)
-
-
-          console.log("\n end \n ...")
           scrapedDataB.push(scrapItemB)
           
          }
@@ -153,6 +151,47 @@ const scrapperScript = async (pr) => {
 
       }
       js.push({name:'Bluecheez', p: scrapedDataB })
+
+      //walcart
+      
+      try{
+        const dataW  = await got(wcrAPI).text()
+
+        $ = cheerio.load(dataW) 
+        
+         
+        var dt = $("li > .product-item-info")
+        
+
+              
+        dt.each(el=>{
+          const scrapItemW = { title: '', price: '', url: '', img: ''}
+          console.log($(dt[el]).find(".price-final_price").html())
+          let price = $(dt[el]).find(".price-final_price")
+          let t = $(dt[el]).find('h2').text()
+          let u = $(dt[el]).find("a").attr("href")
+          let p = $(price[0]).text()
+          let img = $(dt[el]).find("img").attr("src")
+          console.log("\n ........... \n")
+          
+          scrapItemW.title = t
+          scrapItemW.price = p
+          scrapItemW.url = u
+          scrapItemW.img = img 
+          console.log(scrapItemW)
+          
+          scrapedDataW.push(scrapItemW)
+          
+         }
+        )
+      }
+      catch(er){
+        console.log(er)
+        const scrapItemW = { title: er.message, price: 'ERROR', url: '', img: ''}
+        scrapedDataW.push(scrapItemW)
+
+      }
+      js.push({name:'Walcart', p: scrapedDataW })
 
         // te.forEach(elem => {
         //    console.log(elem.text)
