@@ -27,10 +27,10 @@ app.use(morgan('combined'))
 
 app.get('/', (req, res) => {
 
-  scrapperScript().then((e)=> {
+  
     //the promise is resolved here
-    res.send(e)
-  }).catch(console.error.bind(console))
+    res.send("You reach the page. now close it down :)")
+  
 })
 
 app.use("/api/v1/products", v1ProductRouter);

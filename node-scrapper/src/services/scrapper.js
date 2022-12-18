@@ -59,21 +59,56 @@ const scrapperScript = async (pr) => {
                 scrapedDataD.push(scrapItemD)
       
               })
-              js.push({name:'Daraz',p: scrapedDataD })
-              
-              
-              
-              
-            
-            
-          
-      
+                      
       }
       catch(er){
         console.log(er)
-        const scrapItemD = { title: er.message, price: '', url: '', img: ''}
+        const scrapItemD = { title: "Something Wrong, please try again", price: 'ERROR', url: '', img: ''}
         scrapedDataD.push(scrapItemD)
+        
       }  
+      js.push({name:'Daraz',p: scrapedDataD })
+      //walcart
+      
+      try{
+        const dataW  = await got(wcrAPI).text()
+
+        $ = cheerio.load(dataW) 
+        
+         
+        var dt = $("li > .product-item-info")
+        
+
+              
+        dt.each(el=>{
+          const scrapItemW = { title: '', price: '', url: '', img: ''}
+          console.log($(dt[el]).find(".price-final_price").html())
+          let price = $(dt[el]).find(".price-final_price")
+          let t = $(dt[el]).find('h2').text()
+          let u = $(dt[el]).find("a").attr("href")
+          let p = $(price[0]).text()
+          let img = $(dt[el]).find("img").attr("src")
+          console.log("\n ........... \n")
+          
+          scrapItemW.title = t
+          scrapItemW.price = p
+          scrapItemW.url = u
+          scrapItemW.img = img 
+          console.log(scrapItemW)
+          
+          scrapedDataW.push(scrapItemW)
+          
+         }
+        )
+      }
+      catch(er){
+        console.log(er)
+        const scrapItemW = { title: 'Something Wrong', price: 'ERROR', url: '', img: ''}
+        scrapedDataW.push(scrapItemW)
+
+      }
+      js.push({name:'Walcart', p: scrapedDataW })
+
 
       
       
@@ -152,47 +187,7 @@ const scrapperScript = async (pr) => {
       }
       js.push({name:'Bluecheez', p: scrapedDataB })
 
-      //walcart
       
-      try{
-        const dataW  = await got(wcrAPI).text()
-
-        $ = cheerio.load(dataW) 
-        
-         
-        var dt = $("li > .product-item-info")
-        
-
-              
-        dt.each(el=>{
-          const scrapItemW = { title: '', price: '', url: '', img: ''}
-          console.log($(dt[el]).find(".price-final_price").html())
-          let price = $(dt[el]).find(".price-final_price")
-          let t = $(dt[el]).find('h2').text()
-          let u = $(dt[el]).find("a").attr("href")
-          let p = $(price[0]).text()
-          let img = $(dt[el]).find("img").attr("src")
-          console.log("\n ........... \n")
-          
-          scrapItemW.title = t
-          scrapItemW.price = p
-          scrapItemW.url = u
-          scrapItemW.img = img 
-          console.log(scrapItemW)
-          
-          scrapedDataW.push(scrapItemW)
-          
-         }
-        )
-      }
-      catch(er){
-        console.log(er)
-        const scrapItemW = { title: er.message, price: 'ERROR', url: '', img: ''}
-        scrapedDataW.push(scrapItemW)
-
-      }
-      js.push({name:'Walcart', p: scrapedDataW })
-
         // te.forEach(elem => {
         //    console.log(elem.text)
         // })

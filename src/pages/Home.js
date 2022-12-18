@@ -40,7 +40,10 @@ class Home extends React.Component{
 
       const handleTrack = () => {
         if (q.length !== 0) {
-          this.setState({isLoaded:true});
+          this.setState({
+            isSearch: false,
+            isLoaded:true
+          });
           // Do something with value
           console.log("got this:", q);
 
@@ -100,8 +103,8 @@ class Home extends React.Component{
             
                           </div>
                         </nav>
-                        <div className="pt-2 relative mx-auto text-gray-600">
-                          <input className="border-2 border-gray-400 bg-white h-10 px-5 pr-16 h-12 rounded-lg text-sm focus:outline-none"
+                        <div className="pt-2 relative mx-auto text-gray-600 max-w-screen-lg">
+                          <input className="border-2 border-gray-400 bg-white h-10 px-5 pr-16 h-12 rounded-lg text-sm focus:outline-none shadow-inner"
                             type="search" name="search" placeholder="Search" value={q} 
                             onChange={e => {
                               this.setState({ q: e.target.value});
@@ -151,7 +154,9 @@ class Home extends React.Component{
                             
                              
                               <div>
-                                <div className="container max-w-screen-lg mx-auto text-base mt-10 text-stone-700">{product.name} product</div>
+                                <div className="container bg-gray-80 max-w-screen-lg mx-auto h-7 text-base mt-10 text-stone-800"><h3 class="font-medium">{product.name} product
+                                </h3>
+                                </div>
                                 <Products data={product.p} />
                               </div>
                             

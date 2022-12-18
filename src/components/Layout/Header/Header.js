@@ -1,7 +1,22 @@
-import React from "react";
+import React from 'react';
+import { Fragment } from 'react'
+import { Disclosure, Menu, Transition } from '@headlessui/react'
+
+const navigation = [
+  { name: 'Main', href: '#', current: true },
+  { name: 'Products', href: '#', current: false },
+  { name: 'Comparison', href: '/comparison', current: false },
+  { name: 'Reports', href: '#', current: false },
+]
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
+
 class Header extends React.Component {
   render() {
     return(
+      <div>
       <header>
         <nav id="header" className="w-full z-30 top-0 py-1">
           <div className="w-full container mx-auto flex flex-wrap justify-between mt-0 px-6 py-3">
@@ -32,6 +47,35 @@ class Header extends React.Component {
           </div>
         </nav>
       </header>
+      
+          <Disclosure as="nav" className="bg-gray-800">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="flex h-16 items-center justify-between">
+                  <div className="flex items-center">
+                  <div className="hidden md:block">
+                      <div className="ml-10 flex items-baseline space-x-4">
+                        {navigation.map((item) => (
+                          <a
+                            key={item.name}
+                            href={item.href}
+                            className={classNames(
+                              item.current
+                                ? 'bg-gray-900 text-white'
+                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                              'px-3 py-2 rounded-md text-sm font-medium'
+                            )}
+                            aria-current={item.current ? 'page' : undefined}
+                          >
+                            {item.name}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+           </div>         
+          </Disclosure>
+      </div>
     );
   }
 }
