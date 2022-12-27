@@ -82,19 +82,19 @@ const scrapperScript = async (pr) => {
               
         dt.each(el=>{
           const scrapItemW = { title: '', price: '', url: '', img: ''}
-          console.log($(dt[el]).find(".price-final_price").html())
+          
           let price = $(dt[el]).find(".price-final_price")
           let t = $(dt[el]).find('h2').text()
           let u = $(dt[el]).find("a").attr("href")
           let p = $(price[0]).text()
           let img = $(dt[el]).find("img").attr("src")
-          console.log("\n ........... \n")
+          
           
           scrapItemW.title = t
           scrapItemW.price = p
           scrapItemW.url = u
           scrapItemW.img = img 
-          console.log(scrapItemW)
+          
           
           scrapedDataW.push(scrapItemW)
           
@@ -165,7 +165,7 @@ const scrapperScript = async (pr) => {
           
           let t = $(dt[el]).children('div > .product-info').find('h3').text()
           let u = $(dt[el]).find("div > .product-image").attr("data-rendert4s")
-          let p = $(dt[el]).find(".price").text()
+          let p = $(dt[el]).find(".price").html().replace(/<del>.*<ins>/,'').replace('</ins>', '')
           let img = $(dt[el]).find("img").attr("src")
 
           
@@ -173,6 +173,9 @@ const scrapperScript = async (pr) => {
           scrapItemB.price = p
           scrapItemB.url = "https://blucheez.com.bd"+u
           scrapItemB.img = img 
+          console.log("\n.\n")
+          console.log($(dt[el]).find(".price").html())
+          console.log(scrapItemB)
 
           scrapedDataB.push(scrapItemB)
           
