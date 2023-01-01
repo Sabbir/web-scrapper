@@ -36,7 +36,7 @@ class Products extends React.Component{
                   </svg>
                 </div>
                 <section class="hero container max-w-screen-lg mx-auto pb-10 flex justify-center">
-                <p className="pt-3 text-gray-900 max-w-screen-lg font-bold justify-center"> {da.price}</p>
+                <p className="pt-3 text-gray-900 max-w-screen-lg font-bold justify-center"> {da.price===''?'Out of stock': da.price}</p>
                 </section>
                 
               </a>

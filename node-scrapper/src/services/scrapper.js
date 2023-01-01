@@ -84,17 +84,19 @@ const scrapperScript = async (pr) => {
           const scrapItemW = { title: '', price: '', url: '', img: ''}
           
           let price = $(dt[el]).find(".price-final_price")
+          
           let t = $(dt[el]).find('h2').text()
           let u = $(dt[el]).find("a").attr("href")
-          let p = $(price[0]).text()
+          let p = $(price[0]).text();
           let img = $(dt[el]).find("img").attr("src")
-          
           
           scrapItemW.title = t
           scrapItemW.price = p
           scrapItemW.url = u
           scrapItemW.img = img 
           
+          console.log($(price).html())
+          console.log("\n...")
           
           scrapedDataW.push(scrapItemW)
           
@@ -108,48 +110,6 @@ const scrapperScript = async (pr) => {
 
       }
       js.push({name:'Walcart', p: scrapedDataW })
-
-
-      
-      
-      
-      
-      try{
-        const dataA  = await got(aaAPI).text()
-
-        $ = cheerio.load(dataA) 
-        
-        var dt = $("div > .single-product")
-        
-                  
-        dt.each(el=>{
-          const scrapItemA = { title: '', price: '', url: '', img: ''}
-           
-          let t = $(dt[el]).children('div').children("h3").children('a').text()
-          let u = $(dt[el]).children('div').children("h3").children('a').attr('href')
-          let p = $(dt[el]).find(" span > #product_detail_price_tag_span").attr("data-price")
-          let img = $(dt[el]).find("figure > img").attr("data-src")
-
-          scrapItemA.title = t
-          scrapItemA.price = "BDT "+p
-          scrapItemA.url = "https://aadi.com.bd/"+u
-          scrapItemA.img = img 
-
-
-          scrapedDataA.push(scrapItemA)
-          
-          
-         }
-        )
-      }
-      catch(er){
-        console.log(er)
-        const scrapItemA = { title: er.message, price: '', url: '', img: ''}
-        scrapedDataA.push(scrapItemA)
-
-      }
-        js.push({name:'Aadi', p: scrapedDataA })
-
 
       //bluecheeze
       
@@ -189,6 +149,48 @@ const scrapperScript = async (pr) => {
 
       }
       js.push({name:'Bluecheez', p: scrapedDataB })
+      
+      
+      
+      //AAdi
+      try{
+        const dataA  = await got(aaAPI).text()
+
+        $ = cheerio.load(dataA) 
+        
+        var dt = $("div > .single-product")
+        
+                  
+        dt.each(el=>{
+          const scrapItemA = { title: '', price: '', url: '', img: ''}
+           
+          let t = $(dt[el]).children('div').children("h3").children('a').text()
+          let u = $(dt[el]).children('div').children("h3").children('a').attr('href')
+          let p = $(dt[el]).find(" span > #product_detail_price_tag_span").attr("data-price")
+          let img = $(dt[el]).find("figure > img").attr("data-src")
+
+          scrapItemA.title = t
+          scrapItemA.price = "BDT "+p
+          scrapItemA.url = "https://aadi.com.bd/"+u
+          scrapItemA.img = img 
+
+
+          scrapedDataA.push(scrapItemA)
+          
+          
+         }
+        )
+      }
+      catch(er){
+        console.log(er)
+        const scrapItemA = { title: er.message, price: '', url: '', img: ''}
+        scrapedDataA.push(scrapItemA)
+
+      }
+        js.push({name:'Aadi', p: scrapedDataA })
+
+
+      
 
       
         // te.forEach(elem => {
