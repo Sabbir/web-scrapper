@@ -2,6 +2,7 @@ import React from 'react';
 import { Puff } from  'react-loader-spinner'
 import Products from './products';
 import Comparison from './comparison';
+import Rept from './rept';
 import { Disclosure,Transition } from '@headlessui/react'
 import ReactJsAlert from "reactjs-alert"
 
@@ -11,7 +12,7 @@ function classNames(...classes) {
 }
 
 const navigation = [
-  { name: 'Main', id:1, href: '#', current: true, disb: false },
+  { name: 'Search', id:1, href: '#', current: true, disb: false },
   { name: 'Products', id:2, href: '#', current: false, disb: false },
   { name: 'Comparison', id:3, href: '#', current: false, disb: true },
   { name: 'Reports',  id:4, href: '#', current: false, disb: true },
@@ -198,17 +199,17 @@ class Home extends React.Component{
               id===3?(
                 <Comparison data={products}/>
               ):(
-                <div>Report</div>
+                <Rept data={products}/>
               )
             ):(
-            <div className="pt-2 relative mx-auto text-gray-600 max-w-screen-lg">
+            <div className="pt-4 relative mx-auto text-gray-600 max-w-screen-lg">
               <input className="border-2 border-gray-400 bg-white h-10 px-5 pr-16 h-12 rounded-lg text-sm focus:outline-none shadow-inner"
                     type="search" name="search" placeholder="Search" value={q} 
                     onChange={e => {
                       this.setState({ q: e.target.value});
                     }}
                     onKeyDown={handleKeyPress} />
-                  <button type="submit" className="absolute right-0 top-0 mt-5 mr-4" 
+                  <button type="submit" className="absolute right-0 top-0 mt-7 mr-4" 
                   onClick={() => {
                       handleTrack();
                     }}

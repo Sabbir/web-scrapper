@@ -5,12 +5,13 @@ import {
     LinearScale,
     PointElement,
     LineElement,
+    ArcElement,
     Title,
     Tooltip,
     Legend,
   } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import  { faker }  from "@faker-js/faker";
+
 
 
 ChartJS.register(
@@ -18,6 +19,7 @@ ChartJS.register(
     LinearScale,
     PointElement,
     LineElement,
+    ArcElement,
     Title,
     Tooltip,
     Legend
@@ -36,7 +38,7 @@ const options = {
     },
   };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
 
 
 
@@ -60,33 +62,12 @@ class Comparison extends React.Component{
     render(){
       let {d} = this.state
       let dt = this.props.data
-
-        
-  
-        let data = {
-          labels,
-          datasets: [
-            {
-              label: 'Dataset 1',
-              data: [1,2,700,4,5,8,100],
-              borderColor: 'rgb(255, 99, 132)',
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            },
-            {
-              label: 'Dataset 2',
-              data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-              borderColor: 'rgb(53, 162, 235)',
-              backgroundColor: 'rgba(253, 162, 35, 0.5)',
-            },
-          ],
-      };
-  
       
-  
       let lbl = []
       let dset = []
       let g = 0
       let t = 0
+      let b = 32 
   
         dt.map((dat)=>{
           let lb=[]
@@ -94,13 +75,13 @@ class Comparison extends React.Component{
           let price = []
           
           
-          let data1={label:'', data: [], borderColor:'', backgroundColor: ''}
+          let data1={label:'', data: [], borderColor:'', backgroundColor: '', pointBorderWidth: 1, pointHoverRadius: 5,pointRadius: 2}
           
            
            dat.p.map((p)=>{
             lb.push(i.toString())
              let pr = p.price.replace(/[BDT|Tk|'As low as '|\n|' '|'was ']/g, '')
-             price.push(parseInt(pr.replace(/,/g, '')))
+             price.push(parseInt(pr.replace(/[,|' ']/g, '')))
             i++
             t++
            })
@@ -111,13 +92,15 @@ class Comparison extends React.Component{
              lbl = lb
             
              console.log(dat.name) 
-             
+           let r = 255-g 
+           
+           console.log(r,g,b)
            data1.label = dat.name 
-           data1.data = price.sort()
-           data1.borderColor = 'rgb(204,'+g+', 132)' 
-           data1.backgroundColor = 'rgb(204,'+g+', 132)'
-           g= 9+g
-            g>255? g=g-255:g=g+100
+           data1.data = price.sort(function(a, c){return a - c})
+           data1.borderColor = 'rgb('+r+','+g+', '+b+')' 
+           data1.backgroundColor = 'rgb('+r+','+g+', '+b+')'
+           g= g+100
+            g>255? g=g-255: b=b+50
            console.log(data1.data)
            
   
