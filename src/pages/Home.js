@@ -12,10 +12,10 @@ function classNames(...classes) {
 }
 
 const navigation = [
-  { name: 'Search', id:1, href: '#', current: true, disb: false },
-  { name: 'Products', id:2, href: '#', current: false, disb: false },
-  { name: 'Comparison', id:3, href: '#', current: false, disb: true },
-  { name: 'Reports',  id:4, href: '#', current: false, disb: true },
+  { name: 'Search', id:1, href: '#', current: true, disb: false, child:[] },
+  { name: 'Products', id:2, href: '#', current: false, disb: false, child: [] },
+  { name: 'Comparison', id:3, href: '#', current: false, disb: true, child:[] },
+  { name: 'Reports',  id:4, href: '#', current: false, disb: true,child:[] },
 ]
 
 const user = {
@@ -60,7 +60,7 @@ class Home extends React.Component{
             isSearch:false,
             isLoaded:false,
             products: [],
-            msg:"Products not found. Please check the search input "
+            msg:"Products not found. Please check the search input \n Or May be a network\server problem "
         }); 
         }
         products.forEach(el => {
@@ -120,9 +120,6 @@ class Home extends React.Component{
         if(q.length<=1){
           
             this.setState({ 
-              isSearch:false,
-              isLoaded:false,
-              products: [],
               msg:"Happy Searching "
           }); 
         }
@@ -254,7 +251,7 @@ class Home extends React.Component{
                     
                       
                       <div>
-                        <div className="container bg-gray-80 max-w-screen-lg mx-auto h-7 text-base mt-10 text-stone-800"><h3 class="font-medium">{product.name} product
+                        <div className="container bg-gray-80 max-w-screen-lg mx-auto h-7 text-base mt-10 text-stone-800"><h3 class="font-medium">{product.name} products
                         </h3>
                         </div>
                         <Products data={product.p} />
