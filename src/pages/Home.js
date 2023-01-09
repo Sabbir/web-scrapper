@@ -13,7 +13,6 @@ function classNames(...classes) {
 
 const navigation = [
   { name: 'Search', id:1, href: '#', current: true, disb: false, child:[] },
-  { name: 'Products', id:2, href: '#', current: false, disb: false, child: [] },
   { name: 'Comparison', id:3, href: '#', current: false, disb: true, child:[] },
   { name: 'Reports',  id:4, href: '#', current: false, disb: true,child:[] },
 ]
@@ -50,7 +49,7 @@ class Home extends React.Component{
     
    
     render(){
-      const { q, isSearch, isLoaded, products, msg, type, status, id } = this.state;
+      let { q, isSearch, isLoaded, products, msg, type, status, id } = this.state;
       
       if(isSearch){
         
@@ -76,6 +75,7 @@ class Home extends React.Component{
       }
 
       const handleTrack = () => {
+       
         if (q.length !== 0) {
           this.setState({
             isSearch: false,
@@ -137,9 +137,12 @@ class Home extends React.Component{
                   <div className="hidden md:block">
                       <div className="ml-6 flex items-baseline space-x-4">
                         {navigation.map((item) => (
+                         <div> 
                           <a
                             key={item.name}
                             href={item.href}
+                            data-dropdown-toggle={item.id==2?"dropdownNavbar":""}
+                            
                             onClick= {(event) => {
                               (!isSearch)? (
                               this.setState({ status: item.disb })
@@ -164,6 +167,8 @@ class Home extends React.Component{
                           >
                             {item.name}
                           </a>
+                          
+                      </div>
                         ))}
                       </div>
                     </div>
@@ -200,13 +205,13 @@ class Home extends React.Component{
               )
             ):(
             <div className="pt-4 relative mx-auto text-gray-600 max-w-screen-lg">
-              <input className="border-2 border-gray-400 bg-white h-10 px-5 pr-16 h-12 rounded-lg text-sm focus:outline-none shadow-inner"
+              <input className="border-2 border-gray-400 bg-white h-10 px-5 ml-4 pr-16 h-12 rounded-lg text-sm focus:outline-none shadow-inner"
                     type="search" name="search" placeholder="Search" value={q} 
                     onChange={e => {
                       this.setState({ q: e.target.value});
                     }}
                     onKeyDown={handleKeyPress} />
-                  <button type="submit" className="absolute right-0 top-0 mt-7 mr-4" 
+                  <button type="submit" className="absolute right-0 top-0 mt-7 mr-12" 
                   onClick={() => {
                       handleTrack();
                     }}
@@ -217,6 +222,25 @@ class Home extends React.Component{
                         d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                     </svg>
                   </button>
+                  <br /><br />
+                  example: 
+                  <a href="#"   onClick={() =>{
+                    q = 'tshirt'
+                    handleTrack(); }
+                  }     > Tshirt</a>, 
+                  <a href="#"   onClick={() =>{
+                    q = 'hoodie'
+                    handleTrack(); }
+                  }> Hoodie</a>, 
+                  <a href="#"   onClick={() =>{
+                    q = 'sharee'
+                    handleTrack(); }
+                  }> Sharee</a>, 
+                  <a href="#"  onClick={() =>{
+                    q='joggers'; 
+                    handleTrack(); }
+                  }> joggers</a> 
+                   ....
                 </div>
             )}
           { !isLoaded ? (
